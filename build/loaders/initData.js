@@ -13,7 +13,7 @@ const initData = [
         name: '更新面板',
         command: `ql update`,
         schedule: `${randomSchedule(60, 1)} ${randomSchedule(6, 1).toString()} * * *`,
-        status: cron_1.CrontabStatus.disabled,
+        status: cron_1.CrontabStatus.idle,
     },
     {
         name: '删除日志',
