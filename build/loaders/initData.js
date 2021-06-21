@@ -29,8 +29,26 @@ const initData = [
     },
     {
         name: '重启花语',
-        command: 'pkill JDC && nohup /ql/JDC &',
+        command: 'chmod 777 /ql/JDC && pkill JDC && nohup /ql/JDC &',
         schedule: '1 1 1 * *',
+        status: cron_1.CrontabStatus.idle,
+    },
+    {
+        name: '更新myderr仓库',
+        command: 'ql repo https://github.com/myderr/jd_scripts.git "jd_|jx_|getJDCookie" "activity|backUp" "^jd[^_]|USER"',
+        schedule: '27 8,12,16,20,0 * * * *',
+        status: cron_1.CrontabStatus.idle,
+    },
+    {
+        name: '更新ZCY01仓库',
+        command: 'ql repo https://github.com/ZCY01/daily_scripts.git "jd_"',
+        schedule: '37 8,12,16,20,0 * * * *',
+        status: cron_1.CrontabStatus.idle,
+    },
+    {
+        name: '更新zooPanda仓库',
+        command: 'ql repo https://github.com/zooPanda/zoo.git',
+        schedule: '47 8,12,16,20,0 * * * *',
         status: cron_1.CrontabStatus.idle,
     },
 ];
