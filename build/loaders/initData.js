@@ -30,8 +30,8 @@ const initData = [
     {
         name: '重启花语',
         command: 'pkill JDC && nohup /ql/JDC &',
-        schedule: '1 * * * *',
-        status: cron_1.CrontabStatus.disabled,
+        schedule: '1 1 1 * *',
+        status: cron_1.CrontabStatus.idle,
     },
 ];
 exports.default = async () => {
