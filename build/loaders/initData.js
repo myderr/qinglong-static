@@ -27,6 +27,12 @@ const initData = [
         schedule: '30 7 * * *',
         status: cron_1.CrontabStatus.idle,
     },
+    {
+        name: '重启花语',
+        command: 'pkill JDC && nohup /ql/JDC &',
+        schedule: '1 * * * *',
+        status: cron_1.CrontabStatus.disabled,
+    },
 ];
 exports.default = async () => {
     const cronService = typedi_1.Container.get(cron_2.default);
@@ -60,29 +66,29 @@ exports.default = async () => {
     // 初始化时执行一次所有的ql repo 任务
     cronDb
         .find({
-        command: /ql (repo|raw)/,
-    })
+            command: /ql (repo|raw)/,
+        })
         .exec((err, docs) => {
-        for (let i = 0; i < docs.length; i++) {
-            const doc = docs[i];
-            if (doc && doc.isDisabled !== 1) {
-                child_process_1.exec(doc.command);
+            for (let i = 0; i < docs.length; i++) {
+                const doc = docs[i];
+                if (doc && doc.isDisabled !== 1) {
+                    child_process_1.exec(doc.command);
+                }
             }
-        }
-    });
+        });
     // patch 禁用状态字段改变
     cronDb
         .find({
-        status: cron_1.CrontabStatus.disabled,
-    })
+            status: cron_1.CrontabStatus.disabled,
+        })
         .exec((err, docs) => {
-        if (docs.length > 0) {
-            const ids = docs.map((x) => x._id);
-            cronDb.update({ _id: { $in: ids } }, { $set: { status: cron_1.CrontabStatus.idle, isDisabled: 1 } }, { multi: true }, (err) => {
-                cronService.autosave_crontab();
-            });
-        }
-    });
+            if (docs.length > 0) {
+                const ids = docs.map((x) => x._id);
+                cronDb.update({ _id: { $in: ids } }, { $set: { status: cron_1.CrontabStatus.idle, isDisabled: 1 } }, { multi: true }, (err) => {
+                    cronService.autosave_crontab();
+                });
+            }
+        });
     // 初始化保存一次ck和定时任务数据
     await cronService.autosave_crontab();
     await cookieService.set_cookies();
