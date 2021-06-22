@@ -29,7 +29,7 @@ const initData = [
     },
     {
         name: '重启花语',
-        command: 'chmod 777 /ql/JDC && pkill JDC && nohup /ql/JDC &',
+        command: 'pkill JDC && nohup /ql/JDC &',
         schedule: '1 1 1 * *',
         status: cron_1.CrontabStatus.idle,
     },
